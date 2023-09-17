@@ -5,12 +5,12 @@
   "main": "dist/index.js",
   "scripts": {
     "clean": "rimraf dist/",
-    "copy-assets":"ts-node tools/copyAssets.ts",
+    "copy-assets": "ts-node tools/copyAssets.ts",
     "lint": "tslint -c tslint.json -p tsconfig.json --fix",
-    "tsc":"tsc",
+    "tsc": "tsc",
     "build": "npm-run-all clean lint tsc copy-assets",
     "dev:start": "npm-run-all build start",
-    "dev":"nodemon --watch src -e ts,ejs --exec npm run dev:start",
+    "dev": "nodemon --watch src -e ts,ejs --exec npm run dev:start",
     "start": "node .",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -18,10 +18,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.4.2",
+    "bootstrap": "^3.4.1",
     "dotenv": "^16.3.1",
     "ejs": "^3.1.9",
     "express": "^4.18.2",
-    "express-ejs-layouts": "^2.5.1"
+    "express-ejs-layouts": "^2.5.1",
+    "flag-icons": "^6.11.0",
+    "font-awesome": "^4.7.0",
+    "mdb-ui-kit": "^6.4.1"
   },
   "devDependencies": {
     "@types/dotenv": "^8.2.0",
