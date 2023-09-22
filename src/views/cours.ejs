@@ -13,18 +13,17 @@
 </section>
 
 
-
 <div class="container " style="margin-top: 100px;">
             <div class="d-flex" style="gap: 8px; transform: translateX(20px);">
                 <h3 style="font-weight: bold;color: #023434;">Choisir un filtre</h3>
                 <i class="fas fa-filter" style="color: #023434; transform: translateY(8px);"></i>
             </div>
             <ul class="ks-cboxtags" style="gap:20px">
-              <li><input type="checkbox" id="checkboxOne" value="Rainbow Dash"><label for="checkboxOne">Gratuits</label></li>
-              <li><input type="checkbox" id="checkboxTwo" value="Cotton Candy"><label for="checkboxTwo">Payants</label></li>
-              <li><input type="checkbox" id="checkboxThree" value="Rarity" ><label for="checkboxThree">Les mieux notés</label></li>
-              <li><input type="checkbox" id="checkboxFour" value="Princess Celestia"><label for="checkboxFour">Les nouveautés </label></li>
-              <li><input type="checkbox" id="checkboxFive" value="Gusty"><label for="checkboxFive">Les plus vues</label></li>
+              <li><input type="checkbox" id="Gratuits" value="Gratuits"><label for="Gratuits">Gratuits</label></li>
+              <li><input type="checkbox" id="Payants" value="Payants"><label for="Payants">Payants</label></li>
+              <li><input type="checkbox" id="notes" value="notes" ><label for="notes">Les mieux notés</label></li>
+              <li><input type="checkbox" id="new" value="new"><label for="new">Les nouveautés </label></li>
+              <li><input type="checkbox" id="view" value="view"><label for="view">Les plus vues</label></li>
               
             </ul>
           
@@ -33,569 +32,107 @@
           
 <section style="margin-top: 100px;">
 <div class="container" style="transform: translateX(30px);">
-        <div class="row" style="margin-top: 100px;">
-            <div class="col-lg-4">
-    <div class="card shadow-5-strong hover-card" style="max-width: 23rem;">
-      <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-        <img src="https://i.ibb.co/0CdBRkL/programming-background-collage.jpg" alt="programming-background-collage" class="img-fluid" />
-        <a href="#!">
-          <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-        </a>
-      </div>
-      <div class="card-body">
-        <p style="color: #727677;font-size: small;">01/09/2023</p>
-        <h5 class="card-title font-weight-bold" style="font-size: larger;"><a>Apprentissage automatique</a></h5>
-        <ul class="list-unstyled list-inline mb-0">
-          <li class="list-inline-item me-0">
-            <i class="fas fa-star text-warning fa-xs"> </i>
-          </li>
-          <li class="list-inline-item me-0">
-            <i class="fas fa-star text-warning fa-xs"></i>
-          </li>
-          <li class="list-inline-item me-0">
-            <i class="fas fa-star text-warning fa-xs"></i>
-          </li>
-          <li class="list-inline-item me-0">
-            <i class="fas fa-star text-warning fa-xs"></i>
-          </li>
-          <li class="list-inline-item">
-            <i class="fas fa-star-half-alt text-warning fa-xs"></i>
-          </li>
-          <li class="list-inline-item">
-            <p class="text-muted">4.5</p>
-          </li>
-        </ul>
-       <div class="d-flex inline-item">
-        <i class="far fa-clock"></i><p style="font-size: small; margin-left: 10px;">  3 heures, 50 minutes</p>   
-      </div>
-      <div class="d-flex inline-item">
-        <i class="far fa-user"></i><p style="font-size: small; margin-left: 10px;">1200 vues</p>   
-      </div>
-      <div class="d-flex">
-       <p style="color: red;font-weight: bold;font-size:large;">$ 350</p>
-        <button class="btn" style="background-color:#023434;margin-left: 160px;color:rgb(255, 255, 255);">Acheter</button>
-      </div>
+    <div class="row flex-row" id="dataContainer" style="margin-top: 100px;">
+    
+        <script>
+          // Your JSON data
+          let coursesData = <%- JSON.stringify(courses) %>;
+
+          function filterCourses() {
+            const checkboxes = document.querySelectorAll('.ks-cboxtags input[type="checkbox"]');
+            const selectedFilters = Array.from(checkboxes).filter((checkbox) => checkbox.checked).map((checkbox) => checkbox.value);
+
+            const filteredCourses = coursesData.filter((course) => {
+              if (selectedFilters.includes("Gratuits") && course.price > 0) {
+                return false;
+              }
+              if (selectedFilters.includes("Payants") && course.price === 0) {
+                return false;
+              }
+              if (selectedFilters.includes("notes") && course.rating < 4) {
+                return false;
+              }
+              if (selectedFilters.includes("new") && course.last_modified == "2023-09-15") {
+                return false;
+              }
+              if (selectedFilters.includes("view") && course.views < 1000) {
+                return false;
+              }
+              return true;
+            });
+            let filteredCoursesHTML = '';
+
+            filteredCourses.forEach((course) => {
+              const courseObject = {
+                title: course.title,
+                price: course.price,
+                rating: course.rating,
+                date: course.last_modified,
+                views: course.views,
+                duration: course.duration, 
+                image: course.image
+              } 
+              filteredCoursesHTML += `
+                <div class="col-lg-4 mt-4">
+                  <div class="card shadow-5-strong hover-card" style="max-width: 23rem;">
+                    <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
+                      <img src="${courseObject.image}" alt="programming-background-collage" class="img-fluid" />
+                      <a href="/examplecourspage">
+                        <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
+                      </a>
+                    </div>
+                    <div class="card-body">
+                      <p style="color: #727677;font-size: small;">${courseObject.date}</p>
+                      <h5 class="card-title font-weight-bold" style="font-size: larger;"><a>${courseObject.title}</a></h5>
+                      <ul class="list-unstyled list-inline mb-0">
+                        <li class="list-inline-item me-0">
+                          <i class="fas fa-star text-warning fa-xs"> </i>
+                        </li>
+                        <li class="list-inline-item me-0">
+                          <i class="fas fa-star text-warning fa-xs"></i>
+                        </li>
+                        <li class="list-inline-item me-0">
+                          <i class="fas fa-star text-warning fa-xs"></i>
+                        </li>
+                        <li class="list-inline-item me-0">
+                          <i class="fas fa-star text-warning fa-xs"></i>
+                        </li>
+                        <li class="list-inline-item">
+                          <i class="fas fa-star-half-alt text-warning fa-xs"></i>
+                        </li>
+                        <li class="list-inline-item">
+                          <p class="text-muted">${courseObject.rating}</p>
+                        </li>
+                      </ul>
+                      <div class="d-flex inline-item">
+                        <i class="far fa-clock"></i><p style="font-size: small; margin-left: 10px;">  ${courseObject.duration}</p>   
+                      </div>
+                      <div class="d-flex inline-item">
+                        <i class="far fa-user"></i><p style="font-size: small; margin-left: 10px;">${courseObject.views} vues</p>   
+                      </div>
+                      ${courseObject.price > 0 ? `<div class="d-flex">
+                        <p style="color: red;font-weight: bold;font-size:large;">$ ${courseObject.price}</p>
+                        <button class="btn" style="background-color:#023434;margin-left: 160px;color:rgb(255, 255, 255);">Acheter</button>
+                      </div>` : `<span class="badge badge-success" style="margin-left: 200px;font-size: larger; margin-top: 10px;">GRATUIT</span>` }
+                    </div>
+                  </div>
+                </div>
+              `;
+            });
+
+            dataContainer.innerHTML = filteredCoursesHTML;
+          }
+
+          const checkboxes = document.querySelectorAll('.ks-cboxtags input[type="checkbox"]');
+          checkboxes.forEach((checkbox) => {
+            checkbox.addEventListener('change', filterCourses);
+          });
+
+          filterCourses();
+        </script>
         
-      </div>
+
     </div>
-      </div>
-
-
-      <div class="col-lg-4">
-     <div class="card shadow-5-strong hover-card" style="max-width: 23rem;">
-      <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-        <img src="https://i.ibb.co/GpXH9wZ/8800983-853.jpg" alt="8800983-853" class="img-fluid" style="height: 250px;" />
-        <a href="#!">
-          <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-        </a>
-      </div>
-      <div class="card-body">
-        <p style="color: #727677;font-size: small;">01/09/2023</p>
-        <h5 class="card-title font-weight-bold" style="font-size: larger;"><a>Intelligence Artificielle</a></h5>
-        <ul class="list-unstyled list-inline mb-0">
-          <li class="list-inline-item me-0">
-            <i class="fas fa-star text-warning fa-xs"> </i>
-          </li>
-          <li class="list-inline-item me-0">
-            <i class="fas fa-star text-warning fa-xs"></i>
-          </li>
-          <li class="list-inline-item me-0">
-            <i class="fas fa-star text-warning fa-xs"></i>
-          </li>
-          <li class="list-inline-item me-0">
-            <i class="fas fa-star text-warning fa-xs"></i>
-          </li>
-          <li class="list-inline-item">
-            <i class="fas fa-star-half-alt text-warning fa-xs"></i>
-          </li>
-          <li class="list-inline-item">
-            <p class="text-muted">4.5</p>
-          </li>
-        </ul>
-       <div class="d-flex inline-item">
-        <i class="far fa-clock"></i><p style="font-size: small; margin-left: 10px;">  3 heures, 50 minutes</p>   
-      </div>
-      <div class="d-flex inline-item">
-        <i class="far fa-user"></i><p style="font-size: small; margin-left: 10px;">1200 vues</p>   
-      </div>
-      <span class="badge badge-success" style="margin-left: 200px;font-size: larger; margin-top: 10px;">GRATUIT</span>
-        
-      </div>
-    </div>
-  </div>
-
-
-
-  <div class="col-lg-4">
-    <div class="card shadow-5-strong hover-card" style="max-width: 23rem;">
-     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-       <img src="https://i.ibb.co/GpXH9wZ/8800983-853.jpg" alt="8800983-853" class="img-fluid" style="height: 250px;" />
-       <a href="#!">
-         <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-       </a>
-     </div>
-     <div class="card-body">
-       <p style="color: #727677;font-size: small;">01/09/2023</p>
-       <h5 class="card-title font-weight-bold" style="font-size: larger;"><a>Intelligence Artificielle</a></h5>
-       <ul class="list-unstyled list-inline mb-0">
-         <li class="list-inline-item me-0">
-           <i class="fas fa-star text-warning fa-xs"> </i>
-         </li>
-         <li class="list-inline-item me-0">
-           <i class="fas fa-star text-warning fa-xs"></i>
-         </li>
-         <li class="list-inline-item me-0">
-           <i class="fas fa-star text-warning fa-xs"></i>
-         </li>
-         <li class="list-inline-item me-0">
-           <i class="fas fa-star text-warning fa-xs"></i>
-         </li>
-         <li class="list-inline-item">
-           <i class="fas fa-star-half-alt text-warning fa-xs"></i>
-         </li>
-         <li class="list-inline-item">
-           <p class="text-muted">4.5</p>
-         </li>
-       </ul>
-      <div class="d-flex inline-item">
-       <i class="far fa-clock"></i><p style="font-size: small; margin-left: 10px;">  3 heures, 50 minutes</p>   
-     </div>
-     <div class="d-flex inline-item">
-       <i class="far fa-user"></i><p style="font-size: small; margin-left: 10px;">1200 vues</p>   
-     </div>
-     <span class="badge badge-success" style="margin-left: 200px;font-size: larger; margin-top: 10px;">GRATUIT</span>
-       
-     </div>
-   </div>
- </div>
-</div>
-
-
-
-<div class="row " style="margin-top: 50px;">
- <div class="col-lg-4">
-    <div class="card shadow-5-strong hover-card" style="max-width: 23rem;">
-      <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-        <img src="https://i.ibb.co/0CdBRkL/programming-background-collage.jpg" alt="programming-background-collage" class="img-fluid" />
-        <a href="#!">
-          <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-        </a>
-      </div>
-      <div class="card-body">
-        <p style="color: #727677;font-size: small;">01/09/2023</p>
-        <h5 class="card-title font-weight-bold" style="font-size: larger;"><a>Apprentissage automatique</a></h5>
-        <ul class="list-unstyled list-inline mb-0">
-          <li class="list-inline-item me-0">
-            <i class="fas fa-star text-warning fa-xs"> </i>
-          </li>
-          <li class="list-inline-item me-0">
-            <i class="fas fa-star text-warning fa-xs"></i>
-          </li>
-          <li class="list-inline-item me-0">
-            <i class="fas fa-star text-warning fa-xs"></i>
-          </li>
-          <li class="list-inline-item me-0">
-            <i class="fas fa-star text-warning fa-xs"></i>
-          </li>
-          <li class="list-inline-item">
-            <i class="fas fa-star-half-alt text-warning fa-xs"></i>
-          </li>
-          <li class="list-inline-item">
-            <p class="text-muted">4.5</p>
-          </li>
-        </ul>
-       <div class="d-flex inline-item">
-        <i class="far fa-clock"></i><p style="font-size: small; margin-left: 10px;">  3 heures, 50 minutes</p>   
-      </div>
-      <div class="d-flex inline-item">
-        <i class="far fa-user"></i><p style="font-size: small; margin-left: 10px;">1200 vues</p>   
-      </div>
-      <div class="d-flex">
-       <p style="color: red;font-weight: bold;font-size:large;">$ 350</p>
-        <button class="btn" style="background-color:#023434;margin-left: 160px;color:rgb(255, 255, 255);">Acheter</button>
-      </div>
-        
-      </div>
-    </div>
-      </div>
-
-
-      <div class="col-lg-4">
-     <div class="card shadow-5-strong hover-card" style="max-width: 23rem;">
-      <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-        <img src="https://i.ibb.co/GpXH9wZ/8800983-853.jpg" alt="8800983-853" class="img-fluid" style="height: 250px;" />
-        <a href="#!">
-          <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-        </a>
-      </div>
-      <div class="card-body">
-        <p style="color: #727677;font-size: small;">01/09/2023</p>
-        <h5 class="card-title font-weight-bold" style="font-size: larger;"><a>Intelligence Artificielle</a></h5>
-        <ul class="list-unstyled list-inline mb-0">
-          <li class="list-inline-item me-0">
-            <i class="fas fa-star text-warning fa-xs"> </i>
-          </li>
-          <li class="list-inline-item me-0">
-            <i class="fas fa-star text-warning fa-xs"></i>
-          </li>
-          <li class="list-inline-item me-0">
-            <i class="fas fa-star text-warning fa-xs"></i>
-          </li>
-          <li class="list-inline-item me-0">
-            <i class="fas fa-star text-warning fa-xs"></i>
-          </li>
-          <li class="list-inline-item">
-            <i class="fas fa-star-half-alt text-warning fa-xs"></i>
-          </li>
-          <li class="list-inline-item">
-            <p class="text-muted">4.5</p>
-          </li>
-        </ul>
-       <div class="d-flex inline-item">
-        <i class="far fa-clock"></i><p style="font-size: small; margin-left: 10px;">  3 heures, 50 minutes</p>   
-      </div>
-      <div class="d-flex inline-item">
-        <i class="far fa-user"></i><p style="font-size: small; margin-left: 10px;">1200 vues</p>   
-      </div>
-      <span class="badge badge-success" style="margin-left: 200px;font-size: larger; margin-top: 10px;">GRATUIT</span>
-        
-      </div>
-    </div>
-  </div>
-
-
-
-  
-  <div class="col-lg-4">
-    <div class="card shadow-5-strong hover-card" style="max-width: 23rem;">
-     <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-       <img src="https://i.ibb.co/GpXH9wZ/8800983-853.jpg" alt="8800983-853" class="img-fluid" style="height: 250px;" />
-       <a href="#!">
-         <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-       </a>
-     </div>
-     <div class="card-body">
-       <p style="color: #727677;font-size: small;">01/09/2023</p>
-       <h5 class="card-title font-weight-bold" style="font-size: larger;"><a>Intelligence Artificielle</a></h5>
-       <ul class="list-unstyled list-inline mb-0">
-         <li class="list-inline-item me-0">
-           <i class="fas fa-star text-warning fa-xs"> </i>
-         </li>
-         <li class="list-inline-item me-0">
-           <i class="fas fa-star text-warning fa-xs"></i>
-         </li>
-         <li class="list-inline-item me-0">
-           <i class="fas fa-star text-warning fa-xs"></i>
-         </li>
-         <li class="list-inline-item me-0">
-           <i class="fas fa-star text-warning fa-xs"></i>
-         </li>
-         <li class="list-inline-item">
-           <i class="fas fa-star-half-alt text-warning fa-xs"></i>
-         </li>
-         <li class="list-inline-item">
-           <p class="text-muted">4.5</p>
-         </li>
-       </ul>
-      <div class="d-flex inline-item">
-       <i class="far fa-clock"></i><p style="font-size: small; margin-left: 10px;">  3 heures, 50 minutes</p>   
-     </div>
-     <div class="d-flex inline-item">
-       <i class="far fa-user"></i><p style="font-size: small; margin-left: 10px;">1200 vues</p>   
-     </div>
-     <span class="badge badge-success" style="margin-left: 200px;font-size: larger; margin-top: 10px;">GRATUIT</span>
-       
-     </div>
-   </div>
- </div>
-</div>
-
-
-
-
-
-<div class="row " style="margin-top: 50px;">
-    <div class="col-lg-4">
-       <div class="card shadow-5-strong hover-card" style="max-width: 23rem;">
-         <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-           <img src="https://i.ibb.co/0CdBRkL/programming-background-collage.jpg" alt="programming-background-collage" class="img-fluid" />
-           <a href="#!">
-             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-           </a>
-         </div>
-         <div class="card-body">
-           <p style="color: #727677;font-size: small;">01/09/2023</p>
-           <h5 class="card-title font-weight-bold" style="font-size: larger;"><a>Apprentissage automatique</a></h5>
-           <ul class="list-unstyled list-inline mb-0">
-             <li class="list-inline-item me-0">
-               <i class="fas fa-star text-warning fa-xs"> </i>
-             </li>
-             <li class="list-inline-item me-0">
-               <i class="fas fa-star text-warning fa-xs"></i>
-             </li>
-             <li class="list-inline-item me-0">
-               <i class="fas fa-star text-warning fa-xs"></i>
-             </li>
-             <li class="list-inline-item me-0">
-               <i class="fas fa-star text-warning fa-xs"></i>
-             </li>
-             <li class="list-inline-item">
-               <i class="fas fa-star-half-alt text-warning fa-xs"></i>
-             </li>
-             <li class="list-inline-item">
-               <p class="text-muted">4.5</p>
-             </li>
-           </ul>
-          <div class="d-flex inline-item">
-           <i class="far fa-clock"></i><p style="font-size: small; margin-left: 10px;">  3 heures, 50 minutes</p>   
-         </div>
-         <div class="d-flex inline-item">
-           <i class="far fa-user"></i><p style="font-size: small; margin-left: 10px;">1200 vues</p>   
-         </div>
-         <div class="d-flex">
-          <p style="color: red;font-weight: bold;font-size:large;">$ 350</p>
-           <button class="btn" style="background-color:#023434;margin-left: 160px;color:rgb(255, 255, 255);">Acheter</button>
-         </div>
-           
-         </div>
-       </div>
-         </div>
-   
-   
-         <div class="col-lg-4">
-        <div class="card shadow-5-strong hover-card" style="max-width: 23rem;">
-         <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-           <img src="https://i.ibb.co/GpXH9wZ/8800983-853.jpg" alt="8800983-853" class="img-fluid" style="height: 250px;" />
-           <a href="#!">
-             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-           </a>
-         </div>
-         <div class="card-body">
-           <p style="color: #727677;font-size: small;">01/09/2023</p>
-           <h5 class="card-title font-weight-bold" style="font-size: larger;"><a>Intelligence Artificielle</a></h5>
-           <ul class="list-unstyled list-inline mb-0">
-             <li class="list-inline-item me-0">
-               <i class="fas fa-star text-warning fa-xs"> </i>
-             </li>
-             <li class="list-inline-item me-0">
-               <i class="fas fa-star text-warning fa-xs"></i>
-             </li>
-             <li class="list-inline-item me-0">
-               <i class="fas fa-star text-warning fa-xs"></i>
-             </li>
-             <li class="list-inline-item me-0">
-               <i class="fas fa-star text-warning fa-xs"></i>
-             </li>
-             <li class="list-inline-item">
-               <i class="fas fa-star-half-alt text-warning fa-xs"></i>
-             </li>
-             <li class="list-inline-item">
-               <p class="text-muted">4.5</p>
-             </li>
-           </ul>
-          <div class="d-flex inline-item">
-           <i class="far fa-clock"></i><p style="font-size: small; margin-left: 10px;">  3 heures, 50 minutes</p>   
-         </div>
-         <div class="d-flex inline-item">
-           <i class="far fa-user"></i><p style="font-size: small; margin-left: 10px;">1200 vues</p>   
-         </div>
-         <span class="badge badge-success" style="margin-left: 200px;font-size: larger; margin-top: 10px;">GRATUIT</span>
-           
-         </div>
-       </div>
-     </div>
-   
-   
-   
-     
-     <div class="col-lg-4">
-       <div class="card shadow-5-strong hover-card" style="max-width: 23rem;">
-        <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-          <img src="https://i.ibb.co/GpXH9wZ/8800983-853.jpg" alt="8800983-853" class="img-fluid" style="height: 250px;" />
-          <a href="#!">
-            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-          </a>
-        </div>
-        <div class="card-body">
-          <p style="color: #727677;font-size: small;">01/09/2023</p>
-          <h5 class="card-title font-weight-bold" style="font-size: larger;"><a>Intelligence Artificielle</a></h5>
-          <ul class="list-unstyled list-inline mb-0">
-            <li class="list-inline-item me-0">
-              <i class="fas fa-star text-warning fa-xs"> </i>
-            </li>
-            <li class="list-inline-item me-0">
-              <i class="fas fa-star text-warning fa-xs"></i>
-            </li>
-            <li class="list-inline-item me-0">
-              <i class="fas fa-star text-warning fa-xs"></i>
-            </li>
-            <li class="list-inline-item me-0">
-              <i class="fas fa-star text-warning fa-xs"></i>
-            </li>
-            <li class="list-inline-item">
-              <i class="fas fa-star-half-alt text-warning fa-xs"></i>
-            </li>
-            <li class="list-inline-item">
-              <p class="text-muted">4.5</p>
-            </li>
-          </ul>
-         <div class="d-flex inline-item">
-          <i class="far fa-clock"></i><p style="font-size: small; margin-left: 10px;">  3 heures, 50 minutes</p>   
-        </div>
-        <div class="d-flex inline-item">
-          <i class="far fa-user"></i><p style="font-size: small; margin-left: 10px;">1200 vues</p>   
-        </div>
-        <span class="badge badge-success" style="margin-left: 200px;font-size: larger; margin-top: 10px;">GRATUIT</span>
-          
-        </div>
-      </div>
-    </div>
-   </div>
-
-   
-
-
-
-
-
-   
-<div class="row" style="margin-top: 50px;">
-    <div class="col-lg-4">
-       <div class="card shadow-5-strong hover-card" style="max-width: 23rem;">
-         <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-           <img src="https://i.ibb.co/0CdBRkL/programming-background-collage.jpg" alt="programming-background-collage" class="img-fluid" />
-           <a href="#!">
-             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-           </a>
-         </div>
-         <div class="card-body">
-           <p style="color: #727677;font-size: small;">01/09/2023</p>
-           <h5 class="card-title font-weight-bold" style="font-size: larger;"><a>Apprentissage automatique</a></h5>
-           <ul class="list-unstyled list-inline mb-0">
-             <li class="list-inline-item me-0">
-               <i class="fas fa-star text-warning fa-xs"> </i>
-             </li>
-             <li class="list-inline-item me-0">
-               <i class="fas fa-star text-warning fa-xs"></i>
-             </li>
-             <li class="list-inline-item me-0">
-               <i class="fas fa-star text-warning fa-xs"></i>
-             </li>
-             <li class="list-inline-item me-0">
-               <i class="fas fa-star text-warning fa-xs"></i>
-             </li>
-             <li class="list-inline-item">
-               <i class="fas fa-star-half-alt text-warning fa-xs"></i>
-             </li>
-             <li class="list-inline-item">
-               <p class="text-muted">4.5</p>
-             </li>
-           </ul>
-          <div class="d-flex inline-item">
-           <i class="far fa-clock"></i><p style="font-size: small; margin-left: 10px;">  3 heures, 50 minutes</p>   
-         </div>
-         <div class="d-flex inline-item">
-           <i class="far fa-user"></i><p style="font-size: small; margin-left: 10px;">1200 vues</p>   
-         </div>
-         <div class="d-flex">
-          <p style="color: red;font-weight: bold;font-size:large;">$ 350</p>
-           <button class="btn" style="background-color:#023434;margin-left: 160px;color:rgb(255, 255, 255);">Acheter</button>
-         </div>
-           
-         </div>
-       </div>
-         </div>
-   
-   
-         <div class="col-lg-4">
-        <div class="card shadow-5-strong hover-card" style="max-width: 23rem;">
-         <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-           <img src="https://i.ibb.co/GpXH9wZ/8800983-853.jpg" alt="8800983-853" class="img-fluid" style="height: 250px;" />
-           <a href="#!">
-             <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-           </a>
-         </div>
-         <div class="card-body">
-           <p style="color: #727677;font-size: small;">01/09/2023</p>
-           <h5 class="card-title font-weight-bold" style="font-size: larger;"><a>Intelligence Artificielle</a></h5>
-           <ul class="list-unstyled list-inline mb-0">
-             <li class="list-inline-item me-0">
-               <i class="fas fa-star text-warning fa-xs"> </i>
-             </li>
-             <li class="list-inline-item me-0">
-               <i class="fas fa-star text-warning fa-xs"></i>
-             </li>
-             <li class="list-inline-item me-0">
-               <i class="fas fa-star text-warning fa-xs"></i>
-             </li>
-             <li class="list-inline-item me-0">
-               <i class="fas fa-star text-warning fa-xs"></i>
-             </li>
-             <li class="list-inline-item">
-               <i class="fas fa-star-half-alt text-warning fa-xs"></i>
-             </li>
-             <li class="list-inline-item">
-               <p class="text-muted">4.5</p>
-             </li>
-           </ul>
-          <div class="d-flex inline-item">
-           <i class="far fa-clock"></i><p style="font-size: small; margin-left: 10px;">  3 heures, 50 minutes</p>   
-         </div>
-         <div class="d-flex inline-item">
-           <i class="far fa-user"></i><p style="font-size: small; margin-left: 10px;">1200 vues</p>   
-         </div>
-         <span class="badge badge-success" style="margin-left: 200px;font-size: larger; margin-top: 10px;">GRATUIT</span>
-           
-         </div>
-       </div>
-     </div>
-   
-   
-   
-     
-     <div class="col-lg-4">
-       <div class="card shadow-5-strong hover-card" style="max-width: 23rem;">
-        <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
-          <img src="https://i.ibb.co/GpXH9wZ/8800983-853.jpg" alt="8800983-853" class="img-fluid" style="height: 250px;" />
-          <a href="#!">
-            <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
-          </a>
-        </div>
-        <div class="card-body">
-          <p style="color: #727677;font-size: small;">01/09/2023</p>
-          <h5 class="card-title font-weight-bold" style="font-size: larger;"><a>Intelligence Artificielle</a></h5>
-          <ul class="list-unstyled list-inline mb-0">
-            <li class="list-inline-item me-0">
-              <i class="fas fa-star text-warning fa-xs"> </i>
-            </li>
-            <li class="list-inline-item me-0">
-              <i class="fas fa-star text-warning fa-xs"></i>
-            </li>
-            <li class="list-inline-item me-0">
-              <i class="fas fa-star text-warning fa-xs"></i>
-            </li>
-            <li class="list-inline-item me-0">
-              <i class="fas fa-star text-warning fa-xs"></i>
-            </li>
-            <li class="list-inline-item">
-              <i class="fas fa-star-half-alt text-warning fa-xs"></i>
-            </li>
-            <li class="list-inline-item">
-              <p class="text-muted">4.5</p>
-            </li>
-          </ul>
-         <div class="d-flex inline-item">
-          <i class="far fa-clock"></i><p style="font-size: small; margin-left: 10px;">  3 heures, 50 minutes</p>   
-        </div>
-        <div class="d-flex inline-item">
-          <i class="far fa-user"></i><p style="font-size: small; margin-left: 10px;">1200 vues</p>   
-        </div>
-        <span class="badge badge-success" style="margin-left: 200px;font-size: larger; margin-top: 10px;">GRATUIT</span>
-          
-        </div>
-      </div>
-    </div>
-   </div>
    
 
   </div>
