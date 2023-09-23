@@ -112,7 +112,7 @@
                       </div>
                       ${courseObject.price > 0 ? `<div class="d-flex">
                         <p style="color: red;font-weight: bold;font-size:large;">$ ${courseObject.price}</p>
-                        <button class="btn" style="background-color:#023434;margin-left: 160px;color:rgb(255, 255, 255);">Acheter</button>
+                        <button class="btn" id="openmodal" style="background-color:#023434;margin-left: 160px;color:rgb(255, 255, 255);">Acheter</button>
                       </div>` : `<span class="badge badge-success" style="margin-left: 200px;font-size: larger; margin-top: 10px;">GRATUIT</span>` }
                     </div>
                   </div>
@@ -156,5 +156,6 @@
 
 
 
+<%- include('./partials/paymentcard') %>
 
 <%- include ('./partials/footer') %>

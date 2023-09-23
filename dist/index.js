@@ -126,9 +126,11 @@ app.get('/cours/cyber_securite', (req, res) => {
 });
 app.get('/', (req, res) => res.render('home'));
 app.get('/contact', (req, res) => res.render('contact'));
+app.get('/apropos', (req, res) => res.render('apropos'));
 app.get('/profil_etudiant', (req, res) => res.render('profil_etudiant'));
 app.get('/cours_achetes', (req, res) => res.render('cours_achetes'));
 app.get('/cours_visites', (req, res) => res.render('cours_visites'));
+app.get('/interactions', (req, res) => res.render('interactions'));
 app.get('/examplecourspage', (req, res) => res.render('examplecourspage'));
 const PORT = process.env.SERVER_PORT;
 app.listen(PORT, () => {

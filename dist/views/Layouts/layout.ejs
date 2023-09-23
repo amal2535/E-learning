@@ -67,53 +67,6 @@ src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.1/mdb.min.js"
       observer.observe(card);
     });
 
-//modal payement
- 
-const openModalButtons = document.querySelectorAll('[id^="openmodal"]');
-
-const modal = document.getElementById("myModal");
-
-openModalButtons.forEach(function (button) {
-  button.addEventListener("click", function () {
-    modal.style.display = "block"; // Affichez le modal
-
-  });
-});
-
-// Gestionnaire d'événement pour le bouton de fermeture du modal
-const closeModalBtn = document.getElementById("closeModalBtn");
-closeModalBtn.addEventListener("click", function () {
-  modal.style.display = "none"; // Masquez le modal
-
-});
-
-  // Lorsque l'utilisateur clique en dehors du modal, cachez le modal
-  window.onclick = function(event) {
-      if (event.target == modal) {
-          modal.style.display = "none";
-      }
-    }
-  	
-    
-
-
-
-// Sélectionnez tous les éléments avec la classe 'radio' dans la classe 'radio-group'
-const radioElements = document.querySelectorAll('.radio-group .radio');
-
-// Ajoutez un gestionnaire d'événements 'click' à chaque élément 'radio'
-radioElements.forEach(function(radio) {
-    radio.addEventListener('click', function() {
-        // Supprimez la classe 'selected' de tous les éléments 'radio' dans la classe 'radio-group'
-        radioElements.forEach(function(radioElement) {
-            radioElement.classList.remove('selected');
-        });
-
-        // Ajoutez la classe 'selected' à l'élément 'radio' actuel
-        this.classList.add('selected');
-    });
-});
-
 
 
 
@@ -131,6 +84,8 @@ const login = document.getElementById("loginmodal");
 openModallogin.forEach(function (button) {
   button.addEventListener("click", function () {
     login.style.display = "block"; // Affichez le modal
+    register.style.display="none";// Affichez le modal
+
 
   });
 });
@@ -143,7 +98,7 @@ closeModallogin.addEventListener("click", function () {
 });
 
   // Lorsque l'utilisateur clique en dehors du modal, cachez le modal
-  window.onclick = function(event) {
+window.onclick = function(event) {
       if (event.target == login) {
           login.style.display = "none";
       }
@@ -161,7 +116,8 @@ const register = document.getElementById("registermodal");
 
 openModalregister.forEach(function (button) {
   button.addEventListener("click", function () {
-    register.style.display = "block"; // Affichez le modal
+    register.style.display = "block"; 
+    login.style.display="none";// Affichez le modal
 
   });
 });

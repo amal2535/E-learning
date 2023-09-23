@@ -52,7 +52,11 @@
           </div>
        
             <button class="btn" style="background-color:#023434;margin-left: 160px;color:rgb(255, 255, 255);">Voir facture</button>
-      
+            <span class="float-right">20%</span>
+            <div class="progress mb-4">
+              <div class="progress-bar bg-danger" role="progressbar" style="width: 20%"
+                  aria-valuenow="20" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
             
         </div>
           </div>
@@ -101,7 +105,13 @@
                 </div>
              
                   <button class="btn" style="background-color:#023434;margin-left: 160px;color:rgb(255, 255, 255);">Voir facture</button>
-            
+                
+                  <span
+                  class="float-right">40%</span>
+                  <div class="progress mb-4">
+                    <div class="progress-bar bg-warning" role="progressbar" style="width: 40%"
+                        aria-valuenow="40" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
                   
                 </div>
           </div>
@@ -148,7 +158,11 @@
               </div>
            
               <span class="badge badge-success" style="margin-left: 200px;font-size: larger; margin-top: 10px;">GRATUIT</span>          
-                
+              <span class="float-right">60%</span>
+              <div class="progress mb-4">
+                <div class="progress-bar" role="progressbar" style="width: 60%"
+                    aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
               </div>
         </div>
         </div>
@@ -194,8 +208,13 @@
               <i class="far fa-user"></i><p style="font-size: small; margin-left: 10px;">2000 vues</p>   
             </div>
          
-            <button class="btn" style="background-color:#023434;margin-left: 160px;color:rgb(255, 255, 255);">Acheter</button>
-        
+            <button class="btn" id="openmodal" style="background-color:#023434;margin-left: 160px;color:rgb(255, 255, 255);">Acheter</button>
+           
+            <span class="float-right">Terminé</span>
+            <div class="progress">
+              <div class="progress-bar bg-success" role="progressbar" style="width: 100%"
+                  aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+          </div>
               
             </div>
       </div>
@@ -211,6 +230,7 @@
 </div>
 </div>
 
+<%- include('./partials/paymentcard') %>
 
 
 <%- include('./partials/footer') %>

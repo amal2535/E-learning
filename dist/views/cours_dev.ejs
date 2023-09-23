@@ -2,7 +2,7 @@
 
 
 <section >
-<div class="bg-image d-flex justify-content-center align-items-center" style="width: 100%;height: 800px; background-image:url('https://i.ibb.co/Vjr8CZK/person-front-computer-working-html.jpg');">
+<div class="bg-image d-flex justify-content-center align-items-center img-fluid" style="width: 100%;height: 800px; background-image:url('https://i.ibb.co/Vjr8CZK/person-front-computer-working-html.jpg');">
     <div class="mask" style="background-color: rgba(97, 207, 172, 0.6);">
         <div class="d-flex justify-content-center align-items-center h-100">
           <h1 class="fade-hidden text-white mb-0"style="font-size:100px; font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-weight: bold; ">Développement</h1>
@@ -64,6 +64,7 @@
     
               filteredCourses.forEach((course) => {
                 const courseObject = {
+                  id: course.course_id,
                   title: course.title,
                   price: course.price,
                   rating: course.rating,
@@ -77,7 +78,7 @@
                     <div class="card shadow-5-strong hover-card" style="max-width: 23rem;">
                       <div class="bg-image hover-overlay ripple" data-mdb-ripple-color="light">
                         <img src="${courseObject.image}" alt="programming-background-collage" class="img-fluid" />
-                        <a href="/examplecourspage">
+                        <a href="/examplecourspage"  id="${courseObject.id}">
                           <div class="mask" style="background-color: rgba(251, 251, 251, 0.15);"></div>
                         </a>
                       </div>
@@ -112,7 +113,7 @@
                         </div>
                         ${courseObject.price > 0 ? `<div class="d-flex">
                           <p style="color: red;font-weight: bold;font-size:large;">$ ${courseObject.price}</p>
-                          <button class="btn" style="background-color:#023434;margin-left: 160px;color:rgb(255, 255, 255);">Acheter</button>
+                          <button class="btn" id="openmodal"  style="background-color:#023434;margin-left: 160px;color:rgb(255, 255, 255);">Acheter</button>
                         </div>` : `<span class="badge badge-success" style="margin-left: 200px;font-size: larger; margin-top: 10px;">GRATUIT</span>` }
                       </div>
                     </div>
@@ -121,8 +122,12 @@
               });
     
               dataContainer.innerHTML = filteredCoursesHTML;
-            }
-    
+          
+            filteredCourses.forEach((course)=>{
+              const CourseToStore = document.getElementById(course.course_id).onclick = () => {localStorage.setItem('courseId', course.course_id)}
+            })
+          
+          }
             const checkboxes = document.querySelectorAll('.ks-cboxtags input[type="checkbox"]');
             checkboxes.forEach((checkbox) => {
               checkbox.addEventListener('change', filterCourses);
@@ -150,6 +155,6 @@
   </ul>
 </nav>
 
-
+<%- include('./partials/paymentcard') %>
 
 <%- include ('./partials/footer') %>
