@@ -151,7 +151,19 @@ app.get('/cours_visites',(req,res)=> res.render('cours_visites'))
 app.get('/interactions',(req,res)=> res.render('interactions'))
 
 
-app.get('/examplecourspage',(req,res)=> res.render('examplecourspage'))
+app.get('/examplecourspage',(req,res)=> {
+    fs.readFile("./src/platform.json", "utf8", (err: any, jsonString: any) => {
+        if (err) {
+            // tslint:disable-next-line:no-console
+          console.log("File read failed:", err);
+          return;
+        }
+
+        const PlatformData = JSON.parse(jsonString)
+        const courses = PlatformData[0].courses
+        res.render('examplecourspage', {courses});
+    });
+})
 
 
 

@@ -131,7 +131,18 @@ app.get('/profil_etudiant', (req, res) => res.render('profil_etudiant'));
 app.get('/cours_achetes', (req, res) => res.render('cours_achetes'));
 app.get('/cours_visites', (req, res) => res.render('cours_visites'));
 app.get('/interactions', (req, res) => res.render('interactions'));
-app.get('/examplecourspage', (req, res) => res.render('examplecourspage'));
+app.get('/examplecourspage', (req, res) => {
+    fs_1.default.readFile("./src/platform.json", "utf8", (err, jsonString) => {
+        if (err) {
+            // tslint:disable-next-line:no-console
+            console.log("File read failed:", err);
+            return;
+        }
+        const PlatformData = JSON.parse(jsonString);
+        const courses = PlatformData[0].courses;
+        res.render('examplecourspage', { courses });
+    });
+});
 const PORT = process.env.SERVER_PORT;
 app.listen(PORT, () => {
     // tslint:disable-next-line:no-console
